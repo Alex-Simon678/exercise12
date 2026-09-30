@@ -1,5 +1,7 @@
 <?php
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Depends;
 require_once __DIR__ . '/../src/Calculator.php';
 class TestCalculator extends TestCase{
     
@@ -34,5 +36,45 @@ class TestCalculator extends TestCase{
         $this->expectException(\InvalidArgumentException::class);
         $calculator->divide(10, 0);
     }
+
+    public static function additionProvider(): array {
+        return [
+            'positive numbers' => [5, 10, 15],
+            'negative numbers' => [-5, -10, -15],
+            'with zero'        => [0, 5, 5],
+            'mixed signs'      => [-5, 10, 5],
+            'both zeros'       => [0, 0, 0]
+        ];
+    }
+
+    #[DataProvider('additionProvider')]
+    public function testAddWithDataProvider(int $a, int $b, int $expected): void {
+        $calculator = new Calculator();
+        $result = $calculator->add($a, $b);
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testCreateDataStructure(): array {
+        $data = ['initial_step' => 'completed'];
+        
+        $this->assertArrayHasKey('initial_step', $data);
+        
+        return $data;
+    }
+
+    #[Depends('testCreateDataStructure')]
+    public function testModifyDataStructure(array $data): array {
+        $data['modification_step'] = 'completed';
+        $this->assertArrayHasKey('modification_step', $data);
+        return $data;
+    }
+
+    #[Depends('testModifyDataStructure')]
+    public function testVerifyFinalState(array $data): void {
+        $this->assertCount(2, $data);
+        $this->assertEquals('completed', $data['initial_step']);
+        $this->assertEquals('completed', $data['modification_step']);
+    }
+
 }
 
