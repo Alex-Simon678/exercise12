@@ -12,7 +12,7 @@ class TestTaskList extends TestCase {
         
         $this->assertNull($result);
     }
-    
+
     public function testAddAndRetrieveSingleTask(): void {
         $taskList = new TaskList();
         $task = new Task(1, 'First Task');
@@ -22,4 +22,17 @@ class TestTaskList extends TestCase {
         
         $this->assertSame($task, $retrievedTask);
     }
+    public function testAddAndRetrieveMultipleTasks(): void {
+        $taskList = new TaskList();
+        $task1 = new Task(1, 'Task One');
+        $task2 = new Task(2, 'Task Two');
+        
+        $taskList->add($task1);
+        $taskList->add($task2);
+        
+        $this->assertSame($task1, $taskList->getByIndex(0));
+        $this->assertSame($task2, $taskList->getByIndex(1));
+        $this->assertNull($taskList->getByIndex(99));
+    }
+
 }
