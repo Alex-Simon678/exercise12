@@ -12,4 +12,14 @@ class TestTaskList extends TestCase {
         
         $this->assertNull($result);
     }
+    
+    public function testAddAndRetrieveSingleTask(): void {
+        $taskList = new TaskList();
+        $task = new Task(1, 'First Task');
+        
+        $taskList->add($task);
+        $retrievedTask = $taskList->getByIndex(0);
+        
+        $this->assertSame($task, $retrievedTask);
+    }
 }
