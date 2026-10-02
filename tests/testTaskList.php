@@ -47,5 +47,12 @@ class TestTaskList extends TestCase {
         $this->assertNull($taskList->getById(99));
     }
     
+    public function testGetByIndexThrowsExceptionForNegativeIndex(): void {
+        $taskList = new TaskList();
+        
+        $this->expectException(\InvalidArgumentException::class);
+        
+        $taskList->getByIndex(-1);
+    }
 
 }

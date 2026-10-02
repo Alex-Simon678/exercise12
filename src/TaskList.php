@@ -8,6 +8,9 @@ class TaskList {
     }
 
     public function getByIndex(int $index): ?Task {
+        if ($index < 0) {
+            throw new \InvalidArgumentException("Index cannot be negative.");
+        }
         return $this->tasks[$index] ?? null;
     }
     
