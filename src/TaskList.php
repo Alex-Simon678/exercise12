@@ -10,4 +10,14 @@ class TaskList {
     public function getByIndex(int $index): ?Task {
         return $this->tasks[$index] ?? null;
     }
+    
+    public function getById(int $id): ?Task {
+        foreach ($this->tasks as $task) {
+            if ($task->id === $id) {
+                return $task;
+            }
+        }
+        return null;
+    }
+    
 }

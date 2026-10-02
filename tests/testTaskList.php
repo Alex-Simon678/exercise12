@@ -34,5 +34,18 @@ class TestTaskList extends TestCase {
         $this->assertSame($task2, $taskList->getByIndex(1));
         $this->assertNull($taskList->getByIndex(99));
     }
+    public function testGetById(): void {
+        $taskList = new TaskList();
+        $task1 = new Task(10, 'Task A');
+        $task2 = new Task(20, 'Task B');
+        
+        $taskList->add($task1);
+        $taskList->add($task2);
+        
+        $this->assertSame($task1, $taskList->getById(10));
+        $this->assertSame($task2, $taskList->getById(20));
+        $this->assertNull($taskList->getById(99));
+    }
+    
 
 }
