@@ -55,4 +55,42 @@ class TestTaskList extends TestCase {
         $taskList->getByIndex(-1);
     }
 
+    public function testSortByName(): void {
+        $taskList = new TaskList();
+        $taskList->add(new Task(2, 'Zebra'));
+        $taskList->add(new Task(1, 'Apple'));
+
+        $taskList->sortByName();
+
+        $this->assertEquals('Apple', $taskList->getByIndex(0)->name);
+        $this->assertEquals('Zebra', $taskList->getByIndex(1)->name);
+    }
+
+    public function testSortById(): void {
+        $taskList = new TaskList();
+        $taskList->add(new Task(2, 'Zebra'));
+        $taskList->add(new Task(1, 'Apple'));
+
+        $taskList->sortById();
+
+        $this->assertEquals(1, $taskList->getByIndex(0)->id);
+        $this->assertEquals(2, $taskList->getByIndex(1)->id);
+    }
+
+    public function testSortByInvalidColumnThrowsException(): void {
+        $taskList = new TaskList();
+        
+        $this->expectException(\InvalidArgumentException::class);
+        
+        $taskList->sortByColumn('invalid_column');
+    }
+
+    public function testSortByValidColumnString(): void {
+        $taskList = new TaskList();
+        $taskList->add(new Task(2, 'Zebra'));
+        $taskList->add(new Task(1, 'Apple'));
+
+        $taskList->sortByColumn('name');
+        $this->assertEquals('Apple', $taskList->getByIndex(0)->name);
+    }
 }

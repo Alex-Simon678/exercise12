@@ -22,5 +22,22 @@ class TaskList {
         }
         return null;
     }
-    
+
+    public function sortByColumn(string $column): void {
+        if (!in_array($column, ['id', 'name'])) {
+            throw new \InvalidArgumentException("Érvénytelen oszlopnév a rendezéshez.");
+        }
+
+        usort($this->tasks, function (Task $a, Task $b) use ($column) {
+            return $a->$column <=> $b->$column;
+        });
+    }
+
+    public function sortByName(): void {
+        $this->sortByColumn('name');
+    }
+
+    public function sortById(): void {
+        $this->sortByColumn('id');
+    }    
 }
